@@ -7,7 +7,7 @@ function App() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/users")
+        axios.get("/api/users")
             .then(res => setUsers(res.data))
             .catch(err => {
                 console.error("Error fetching users:", err);
