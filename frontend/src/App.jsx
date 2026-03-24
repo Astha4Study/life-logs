@@ -1,31 +1,36 @@
-import { useState, useEffect } from 'react'
-import axios from "axios";
-import './App.css'
+import { React } from "react";
+import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Login from "./pages/auth/Login";
 
 function App() {
-    const [users, setUsers] = useState([]);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        axios.get("/api/users")
-            .then(res => setUsers(res.data))
-            .catch(err => {
-                console.error("Error fetching users:", err);
-                setError(err.message);
-            });
-    }, []);
-    return (
-        <div>
-            <h1>User Manager</h1>
-            {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-            {users.length === 0 && !error && <p>Tidak ada users</p>}
-            <ul>
-                {users.map(user => (
-                    <li key={user._id}>{user.name}</li>
-                ))}
-            </ul>
-        </div>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            localStorage.getItem("token") ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
