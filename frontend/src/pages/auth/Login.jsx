@@ -7,11 +7,11 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
 
-  if (token) {
-    return <Navigate to="/dashboard" replace />;
-  }
+  // if (token) {
+  //   return <Navigate to="/dashboard" replace />;
+  // }
 
   const from = location.state?.from?.pathname || "/dashboard";
 
@@ -25,7 +25,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center  px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-md rounded-2xl shadow-lg p-8">
         {/* Title */}
         <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
