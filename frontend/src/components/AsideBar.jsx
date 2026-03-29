@@ -1,14 +1,36 @@
-import React from "react";
+import React, { memo } from "react";
+import { NavLink } from "react-router-dom";
+import { Home, BookOpen, Image, Compass } from "lucide-react";
+import { Separator } from "./ui/separator";
 
-export default function AsideBar() {
+import TranslationButton from "./TranslationButton";
+
+const navItems = [
+  { label: "Beranda", to: "/", icon: Home, end: true },
+  { label: "Catatan", to: "/catatan", icon: BookOpen },
+  { label: "Momen", to: "/momen", icon: Image },
+  { label: "Rencana", to: "/rencana", icon: Compass },
+];
+
+function AsideBar() {
   return (
-    <aside className="border w-full rounded-xl  p-4">
-      <div className="w-full">
-        <div className="flex flex-col items-center justify-center">
-          <img src="" alt="" className="rounded-full bg-gray-300 h-20 w-20" />
-          <h2 className="text-lg flex gap-1.5 items-center font-semibold mt-2">
-            Astha Fortune{" "}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="18" height="18">
+    <aside className="sticky top-6 w-full font-[DM_Sans,sans-serif]">
+      <div className="space-y-4 px-1 py-2">
+        {/* USER PROFILE */}
+        <div className="flex flex-col items-center text-center">
+          {/* AVATAR */}
+          <div className="w-20 h-20 rounded-full bg-linear-to-br from-pink-200 to-pink-400 flex items-center justify-center text-sm font-semibold text-pink-800 ">
+            A
+          </div>
+          {/* NAME */}
+          <div className="flex mt-3 gap-1 items-center">
+            <p className="text-lg font-semibold text-neutral-800">Aysha</p>{" "}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 256 256"
+              width="18"
+              height="18"
+            >
               <g
                 style={{
                   stroke: "none",
@@ -53,10 +75,90 @@ export default function AsideBar() {
                 />
               </g>
             </svg>
-          </h2>
+          </div>
+          <div className="mt-2">
+            <TranslationButton />
+          </div>
         </div>
-        <div></div>
+
+        <Separator />
+
+        {/* Nav */}
+        <nav className="space-y-0.5">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) =>
+                  [
+                    "group flex items-center gap-3 rounded-xl px-2.5 py-2 transition-all duration-200",
+                    isActive ? "bg-pink-50" : "hover:bg-zinc-50",
+                  ].join(" ")
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    {/* ICON WRAPPER */}
+                    <div
+                      className={[
+                        "w-7.5 h-7.5 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200",
+                        isActive
+                          ? "bg-pink-100"
+                          : "bg-zinc-100 group-hover:bg-zinc-200",
+                      ].join(" ")}
+                    >
+                      <Icon
+                        size={14}
+                        className={
+                          isActive
+                            ? "text-pink-600"
+                            : "text-zinc-400 group-hover:text-zinc-600"
+                        }
+                        strokeWidth={1.8}
+                      />
+                    </div>
+
+                    {/* LABEL */}
+                    <span
+                      className={[
+                        "text-[13px] font-medium transition-colors duration-200",
+                        isActive
+                          ? "text-pink-700"
+                          : "text-zinc-500 group-hover:text-zinc-800",
+                      ].join(" ")}
+                    >
+                      {item.label}
+                    </span>
+                  </>
+                )}
+              </NavLink>
+            );
+          })}
+        </nav>
+
+        <div className="h-px bg-zinc-100 mx-2" />
+
+        {/* FOKUS CARD */}
+        <div className="relative overflow-hidden rounded-xl border border-pink-100 p-3.5">
+          {/* Decorative circle */}
+          <div className="absolute -right-2 -bottom-2 w-12 h-12 rounded-full bg-pink-100 opacity-50 pointer-events-none" />
+
+          <div className="flex items-center gap-1.5 mb-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-pink-300 inline-block" />
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-pink-500">
+              Fokus
+            </p>
+          </div>
+          <p className="text-[12.5px] italic font-serif leading-relaxed text-zinc-500">
+            Menjaga hal-hal kecil tetap berarti, tanpa perlu dibuat berlebihan.
+          </p>
+        </div>
       </div>
     </aside>
   );
 }
+
+export default memo(AsideBar);
